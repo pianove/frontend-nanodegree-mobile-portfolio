@@ -5,7 +5,7 @@
 
 Copy the below URL to your web browser:
 
-http://pianove.github.io/frontend-nanodegree-mobile-portfolio/ 
+http://pianove.github.io/frontend-nanodegree-mobile-portfolio/index.html
 
 ####Part 1: Optimize PageSpeed Insights score for index.html
 Run the above URL through PageSpeed Insights.
@@ -16,13 +16,12 @@ The original 30/100 Desktop speed score has been significantly improved to 88/10
 1. Image optimization 
 when I resized /views/images/pizzeria.jpg.
 
-then went up to 92/100 thanks to 
+then went up to 94/100 thanks to 
 2. css optimization (media=print)
 3. remove of the <script async src="js/perfmatters.js"></script> as the crpmetrics can be reported by google analytics api. the inline script function sends these metrics to an analytic server.
-4. skip web font and inline into css
+4. skip web font and inline css into html.
 
-all these changes resulted in a mobile score of 86/100. To improve that to 92/100
-5. 
+All these changes resulted in a mobile score of 93/100.
 
 
 
