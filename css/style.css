@@ -77,11 +77,13 @@ strong {
     font-weight: bold;
 }
 
+/*
 pre,
 code {
     font-family: monospace, monospace;
     font-size: 1em;
 }
+*/
 
 ul, 
 ol {
