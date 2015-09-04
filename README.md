@@ -10,16 +10,16 @@ http://pianove.github.io/frontend-nanodegree-mobile-portfolio/
 ####Part 1: Optimize PageSpeed Insights score for index.html
 Run the above URL through PageSpeed Insights.
 
-Below you find the modifications that I made based on the suggestions made by this awesome Google whisperer product.
+Below you find the modifications that I made based on the suggestions whispered by this awesome Google product.
 
-The original 30/100 Desktop speed score has been significantly improved via
+The original 30/100 Desktop speed score has been significantly improved to 88/100 thanks to
 1. Image optimization 
-resized /views/images/pizzeria.jpg
-compressed /img/profilepic.jpg
+when I resized /views/images/pizzeria.jpg.
 
-2. eliminate rendering block elements via
-asynchronous javascript call
-optimize css calls
+then went up to 92/100 thanks to 
+2. css optimization (media=print)
+3. remove of the <script async src="js/perfmatters.js"></script> as the crpmetrics are reported by google analytics api
+
 
 ####Part 2: Optimize Frames per Second in pizza.html
 
