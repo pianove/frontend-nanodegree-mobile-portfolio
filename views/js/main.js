@@ -501,10 +501,15 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
+/* TODO is there a faster way to access to DOM than querySelectorAll yes document.getElementsByClass()?*/
   var items = document.querySelectorAll('.mover');
   for (var i = 0; i < items.length; i++) {
+/* TODO what are the exact numbers that phase and document.body.scrollTop give me per iteration? The phase value depends on the modulo operator '% '. Modulo gives us the remainder when we divide i by 5.we are calculating the same set of 5 numbers for all of our pizzas no matter how big our listing. wecould storethese 5 numbers only*/
+      
     var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    //to see value//  
+    console.log(phase, document.body.scrollTop / 1250);
+// The Layout gets retriggered every time we scroll. we should try css transform property as a hardware accelereation that reduce the need to trigger a re-layout. transform: translateX(); check there is a big change or not!!//       
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -514,7 +519,9 @@ function updatePositions() {
   window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
   if (frame % 10 === 0) {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-    logAverageFrame(timesToUpdatePosition);
+   //TODO Animating pizza in its own layer with by adding to .mover:      transform:translateZ(0);      transform: translate3d(0,0,0); backface- visibility: hidden;//
+      
+      logAverageFrame(timesToUpdatePosition);
   }
 }
 
@@ -525,7 +532,8 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  //TODO Only a handful of pizzas that show up on the screen at any given scroll.// 
+    for (var i = 0; i < 200; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
