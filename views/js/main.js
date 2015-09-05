@@ -447,6 +447,9 @@ var resizePizzas = function(size) {
 
     return dx;
   }
+    
+    
+    
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
@@ -501,16 +504,27 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-/* There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClassName()*/
+/* CHANGES MADE: There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClassName()*/
   var items = document.getElementsByClassName('.mover');
+  /* CHANGES MADE: Store phase values that is the remainder when we divide i by 5*/
+  var phase = [0, 1, 2, 3, 4];
   for (var i = 0; i < items.length; i++) {
-/* The phase value depends on the modulo operator '% '. Modulo gives us the remainder when we divide i by 5.we are calculating the same set of 5 numbers for all of our pizzas no matter how big our listing. we should store just these 5 numbers only*/
       
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+      for (var j = 0; j< phase.length; j++) {
+          
+       var noPxToLeft = 100 * phase[j];
+       items[i].style.transform = "translateX(" + noPxToLeft + "px)";     
+      }
+/* CHANGES MADE: The phase value depends on the modulo operator '% '. Modulo gives us the remainder when we divide i by 5.we are calculating the same set of 5 numbers for all of our pizzas no matter how big our listing. we should store just these 5 numbers only*/
+      
+//    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     //to see value//  
-    console.log("Phase value " + phase + "doc.body.etc "+ document.body.scrollTop / 1250);
-// The Layout gets retriggered every time we scroll. we should try css transform property as a hardware accelereation that reduce the need to trigger a re-layout. transform: translateX(); check there is a big change or not!!//       
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    console.log(phase);
+//    console.log("Phase value " + phase + "doc.body.etc "+ document.body.scrollTop / 1250);
+// CHANGES MADE: The Layout gets retriggered every time we scroll. we should try css transform property as a hardware accelereation that reduce the need to trigger a re-layout. transform: translateX(); check there is a big change or not!!//       
+//    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+      
+    
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -529,19 +543,26 @@ function updatePositions() {
 window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
+//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 256px distance in each row,that makes max. 1440/(256 + 73)+1 that makes 5 pizzas in each row. To optimize the number of pizzas created I used screen width and height// 
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8;
-  var s = 256;
-  //TODO Only a handful of pizzas that show up on the screen at any given scroll.// 
-    for (var i = 0; i < 200; i++) {
-    var elem = document.createElement('img');
-    elem.className = 'mover';
-    elem.src = "images/pizza.png";
-    elem.style.height = "100px";
-    elem.style.width = "73.333px";
-    elem.basicLeft = (i % cols) * s;
-    elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+  var distance = 256;
+  var picWidth = 73.333;
+  var picHeight = 100;
+  var cols = screen.width / (distance + picWidth)  + 1;
+  var rows = screen.height / (distance + picHeight) + 1;    
+  for (var i = 0; i < cols; i++) {
+    for (var j = 0; j < rows; j++) {
+        var elem = document.createElement('img');
+        elem.className = 'mover';
+        elem.src = "images/pizza.png";
+        elem.style.height = picHeight + "px";
+        elem.style.width = picWidth + "px";
+        elem.style.transform = "translate(" + (distance * i) + "px," + (j * distance) +"px)";  
+         
+//        elem.basicLeft = (i % cols) * s;
+//        elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    document.getElementById("movingPizzas1").appendChild(elem);      
+     }
   }
   updatePositions();
 });
