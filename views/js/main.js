@@ -501,7 +501,7 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-/* There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClass()*/
+/* There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClassName()*/
   var items = document.getElementsByClassName('.mover');
   for (var i = 0; i < items.length; i++) {
 /* TODO what are the exact numbers that phase and document.body.scrollTop give me per iteration? The phase value depends on the modulo operator '% '. Modulo gives us the remainder when we divide i by 5.we are calculating the same set of 5 numbers for all of our pizzas no matter how big our listing. we should store just these 5 numbers only*/
