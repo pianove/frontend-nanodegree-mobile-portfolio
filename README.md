@@ -5,7 +5,7 @@
 
 Copy the below URL to your web browser:
 
-http://pianove.github.io/frontend-nanodegree-mobile-portfolio/index.html
+http://pianove.github.io/frontend-nanodegree-mobile-portfolio/
 
 ####Part 1: Optimize PageSpeed Insights score for index.html
 Run the above URL through PageSpeed Insights.
@@ -19,10 +19,9 @@ when I resized /views/images/pizzeria.jpg.
 then went up to 94/100 thanks to 
 2. css optimization (media=print)
 3. remove of the <script async src="js/perfmatters.js"></script> as the crpmetrics can be reported by google analytics api. the inline script function sends these metrics to an analytic server.
-4. skip web font and inline css into html.
+4. skip web font and inline css into html to optimize bytes and get the same design.
 
 All these changes resulted in a mobile score of 93/100.
-
 
 
 ####Part 2: Optimize Frames per Second in pizza.html
@@ -30,6 +29,15 @@ All these changes resulted in a mobile score of 93/100.
 To optimize views/pizza.html, you will need to modify views/js/main.js until your frames per second rate is 60 fps or higher. You will find instructive comments in main.js. 
 
 You might find the FPS Counter/HUD Display useful in Chrome developer tools described here: [Chrome Dev Tools tips-and-tricks](https://developer.chrome.com/devtools/docs/tips-and-tricks).
+
+To launch pizza.html you copy the below Url to your web browser http://pianove.github.io/frontend-nanodegree-mobile-portfolio/views/pizza.html
+
+1.When scrolling, the original total time to run updatePositions function call was way too long 623.245ms and with many warnings about forced synchronous layout.
+
+Changes made to updatePositions function:
+1. use getElementsByClass('.mover) instead of querySelecteroAll
+2. since phase value gives always the same set of 5 numbers (1,2,3,4,0) as Modulo gives the remainder when we divide i by 5,  
+To optimize this 
 
 ### Optimization Tips and Tricks
 * [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")

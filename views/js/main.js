@@ -501,14 +501,14 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-/* TODO is there a faster way to access to DOM than querySelectorAll yes document.getElementsByClass()?*/
-  var items = document.querySelectorAll('.mover');
+/* There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClass()*/
+  var items = document.getElementsByClass('.mover');
   for (var i = 0; i < items.length; i++) {
-/* TODO what are the exact numbers that phase and document.body.scrollTop give me per iteration? The phase value depends on the modulo operator '% '. Modulo gives us the remainder when we divide i by 5.we are calculating the same set of 5 numbers for all of our pizzas no matter how big our listing. wecould storethese 5 numbers only*/
+/* TODO what are the exact numbers that phase and document.body.scrollTop give me per iteration? The phase value depends on the modulo operator '% '. Modulo gives us the remainder when we divide i by 5.we are calculating the same set of 5 numbers for all of our pizzas no matter how big our listing. we should store just these 5 numbers only*/
       
     var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     //to see value//  
-    console.log(phase, document.body.scrollTop / 1250);
+    console.log("Phase value", phase, document.body.scrollTop / 1250);
 // The Layout gets retriggered every time we scroll. we should try css transform property as a hardware accelereation that reduce the need to trigger a re-layout. transform: translateX(); check there is a big change or not!!//       
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
