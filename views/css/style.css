@@ -31,9 +31,9 @@ form {
 
 .mover {
   position: fixed;
-  width: 256px;
+/*  width: 256px;*/
   z-index: -1;
-  will-change:transform;
+/*  will-change:transform;*/
   display: block;
 }
 
