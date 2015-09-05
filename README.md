@@ -35,7 +35,7 @@ To launch pizza.html you copy the below Url to your web browser http://pianove.g
 1.When scrolling, the original total time to run updatePositions function call was way too long 623.245ms and with many warnings about forced synchronous layout.
 
 Changes made to updatePositions function:
-1. use getElementsByClass('.mover) instead of querySelecteroAll
+1. use getElementsByClassName('.mover) instead of querySelecteroAll
 2. since phase value gives always the same set of 5 numbers (1,2,3,4,0) as Modulo gives the remainder when we divide i by 5,  
 To optimize this 
 
