@@ -501,68 +501,62 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
-function updatePositions() {
+function updatePositions() {    
   frame++;
   window.performance.mark("mark_start_frame");
-/* CHANGES MADE: There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClassName()*/
-  var items = document.getElementsByClassName('.mover');
-  /* CHANGES MADE: Store phase values that is the remainder when we divide i by 5*/
-  var phase = [0, 1, 2, 3, 4];
-  for (var i = 0; i < items.length; i++) {
-      
-      for (var j = 0; j< phase.length; j++) {
-          
-       var noPxToLeft = 100 * phase[j];
-       items[i].style.transform = "translateX(" + noPxToLeft + "px)";     
-      }
-/* CHANGES MADE: The phase value depends on the modulo operator '% '. Modulo gives us the remainder when we divide i by 5.we are calculating the same set of 5 numbers for all of our pizzas no matter how big our listing. we should store just these 5 numbers only*/
-      
-//    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    //to see value//  
-    console.log(phase);
-//    console.log("Phase value " + phase + "doc.body.etc "+ document.body.scrollTop / 1250);
-// CHANGES MADE: The Layout gets retriggered every time we scroll. we should try css transform property as a hardware accelereation that reduce the need to trigger a re-layout. transform: translateX(); check there is a big change or not!!//       
-//    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-      
-    
+  /* CHANGES MADE: There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClassName()*/
+  var items = document.getElementsByClassName("mover");
+  /* CHANGES MADE: The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop look up and phase calculation removed from the loop */    
+  var top = document.body.scrollTop / 1250;
+  var phases = [];
+  for (var j = 0; j < 5; j++){
+    phases.push(Math.sin(top + j) * 100);
   }
-
+  for (var i = 0; i < items.length; i++) {
+//    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+//    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+//    items[i].style.left = items[i].basicLeft + phases[items[i].phase] + 'px';
+    // CHANGES MADE:  I used css transform property as a hardware acceleration transform: translateX();// 
+    items[i].style.transform = "translateX(" + phases[items[i].phase] + "px)";
+  }
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
   window.performance.mark("mark_end_frame");
   window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
   if (frame % 10 === 0) {
-    var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-   //TODO Animating pizza in its own layer with by adding to .mover:      transform:translateZ(0);      transform: translate3d(0,0,0); backface- visibility: hidden;//
-      
+    var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");     
       logAverageFrame(timesToUpdatePosition);
   }
-}
+   requestAnimationFrame(updatePositions);
+ }
+
+// CHANGES MADE: I added the updatePositions function as a parameter to the window.requestAnimationFrame method in the scroll event listener//
 
 // runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
+//window.addEventListener('scroll', updatePositions);
+
+window.addEventListener('scroll', function() {
+  window.requestAnimationFrame(updatePositions);
+});
 
 // Generates the sliding pizzas when the page loads.
-//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 256px distance in each row,that makes max. 1440/(256 + 73)+1 that makes 5 pizzas in each row. To optimize the number of pizzas created I used screen width and height// 
+//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 8 columns, i can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza// 
 document.addEventListener('DOMContentLoaded', function() {
-  var distance = 256;
-  var picWidth = 73.333;
-  var picHeight = 100;
-  var cols = screen.width / (distance + picWidth)  + 1;
-  var rows = screen.height / (distance + picHeight) + 1;    
-  for (var i = 0; i < cols; i++) {
-    for (var j = 0; j < rows; j++) {
+  var cols = 8;
+  var s = 256;     
+  for (var i = 0; i < 24; i++) {    
         var elem = document.createElement('img');
         elem.className = 'mover';
         elem.src = "images/pizza.png";
-        elem.style.height = picHeight + "px";
-        elem.style.width = picWidth + "px";
-        elem.style.transform = "translate(" + (distance * i) + "px," + (j * distance) +"px)";  
-         
-//        elem.basicLeft = (i % cols) * s;
-//        elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.getElementById("movingPizzas1").appendChild(elem);      
-     }
+        elem.style.height = "100px";
+        elem.style.width = "73.333px";
+        elem.style.position = "fixed"; // inline all css//
+        elem.style.zIndex = "-1"; // inline all css//
+        elem.phase = i % 5; // phase number calculated here
+        elem.basicLeft = (i % cols) * s;
+        elem.style.top = (Math.floor(i / cols) * s) + 'px';
+        elem.style.left = elem.basicLeft + 'px';//initiate y coordinate
+        document.getElementById("movingPizzas1").appendChild(elem);            
   }
-  updatePositions();
+//  updatePositions(); no need to call
 });
