@@ -477,24 +477,29 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
     "use strict";
-    //  requestAnimationFrame(updatePositions);
     frame += 1;
     window.performance.mark("mark_start_frame");
     /* CHANGES MADE: There is a faster way to access to DOM than querySelectorAll that is document.getElementsByClassName()*/
     var items = document.getElementsByClassName("mover");
-    /* CHANGES MADE: The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop look up and phase calculation removed from the loop */
+    /* CHANGES MADE: The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop is cached and phase calculation removed from the loop */
     var top = document.body.scrollTop / 1250;
     var phases = [];
     var j;
-    for (j = 0; j < 5; j += 1) {
-        phases.push(Math.sin(top + j) * 100);
-    }
+    phases[0] = Math.sin(top + 0) * 100;
+    phases[1] = Math.sin(top + 1) * 100;
+    phases[2] = Math.sin(top + 2) * 100;
+    phases[3] = Math.sin(top + 3) * 100;
+    phases[4] = Math.sin(top + 4) * 100;
+//    for (j = 0; j < 5; j += 1) {
+//        phases.push(Math.sin(top + j) * 100);
+//    }
     for (i = 0; i < items.length; i += 1) {
 //      var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
 //      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
 //      items[i].style.left = items[i].basicLeft + phases[items[i].phase] + 'px';
     // CHANGES MADE:  I used css transform property as a hardware acceleration transform: translateX();//
-        items[i].style.transform = "translateX(" + phases[items[i].phase] + "px)";
+//        items[i].style.transform = "translateX(" + phases[items[i].phase] + "px)";
+        items[i].style.transform = "translate3d(" + phases[items[i].phase] + "px, 0, 0)";
     }
     // User Timing API to the rescue again. Seriously, it's worth learning.
     // Super easy to create custom metrics.
@@ -504,7 +509,6 @@ function updatePositions() {
         var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
         logAverageFrame(timesToUpdatePosition);
     }
-//   requestAnimationFrame(updatePositions);
 }
 
 // CHANGES MADE: I added the updatePositions function as a parameter to the window.requestAnimationFrame method in the scroll event listener//
@@ -532,6 +536,7 @@ document.addEventListener('DOMContentLoaded', function () {
         elem.style.width = "73.333px";
         elem.style.position = "fixed"; // inline all css//
         elem.style.zIndex = "-1"; // inline all css//
+        elem.style.transform = "translate3d(0, 0, 0)";
         elem.phase = i % 5; // phase number calculated here
         elem.basicLeft = (i % cols) * s;
         elem.style.top = (Math.floor(i / cols) * s) + 'px';
