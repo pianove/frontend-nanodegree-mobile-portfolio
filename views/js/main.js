@@ -499,7 +499,6 @@ function updatePositions() {
 //      items[i].style.left = items[i].basicLeft + phases[items[i].phase] + 'px';
     // CHANGES MADE:  I used css transform property as a hardware acceleration transform: translateX();//
 //        items[i].style.transform = "translateX(" + phases[items[i].phase] + "px)";
-        items[i].style.transform = "translate3d(" + phases[items[i].phase] + "px, 0, 0)";
     }
     // User Timing API to the rescue again. Seriously, it's worth learning.
     // Super easy to create custom metrics.
