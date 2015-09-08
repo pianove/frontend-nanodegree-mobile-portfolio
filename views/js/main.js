@@ -421,13 +421,19 @@ var resizePizzas = function (size) {
         return dx;
     }
 
-  // Iterates through pizza elements on the page and changes their widths
+// Iterates through pizza elements on the page and changes their widths
+// CHANGES MADE: to regroup the read and write statements and reduce calculatation in the for loop, variables newwidth and dx (read) moved out the loop. querySelectorAll replaced by getElementsByClassName
     function changePizzaSizes(size) {
-        var i, newwidth, dx;
+        "use strict";
+        var dx = determineDx(document.getElementsByClassName("randomPizzaContainer"), size);
+        var i;
+        var newwidth = (document.getElementsByClassName("randomPizzaContainer").offsetWidth + dx) + 'px';
+
         for (i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i += 1) {
-            dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-            newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-            document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+//            dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+//            newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+//            document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+            document.getElementsByClassName("randomPizzaContainer")[i].style.width = newwidth;
         }
     }
 
@@ -484,7 +490,7 @@ function updatePositions() {
     /* CHANGES MADE: The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop is cached and phase calculation removed from the loop */
     var top = document.body.scrollTop / 1250;
     var phases = [];
-    var j;
+//    var j;
     phases[0] = Math.sin(top + 0) * 100;
     phases[1] = Math.sin(top + 1) * 100;
     phases[2] = Math.sin(top + 2) * 100;
@@ -498,7 +504,7 @@ function updatePositions() {
 //      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
 //      items[i].style.left = items[i].basicLeft + phases[items[i].phase] + 'px';
     // CHANGES MADE:  I used css transform property as a hardware acceleration transform: translateX();//
-//        items[i].style.transform = "translateX(" + phases[items[i].phase] + "px)";
+        items[i].style.transform = "translateX(" + phases[items[i].phase] + "px)";
     }
     // User Timing API to the rescue again. Seriously, it's worth learning.
     // Super easy to create custom metrics.
