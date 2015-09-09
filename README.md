@@ -39,41 +39,41 @@ Changes made to updatePositions function:
 
 line 483>
 
-use getElementsByClassName('.mover) instead of querySelectorAll
+    use getElementsByClassName('.mover) instead of querySelectorAll
 
 line 485>
 
-The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop is cached and phase calculation removed from the loop
+    The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop is cached and phase calculation removed from the loop
 
 line 486>
 
-since phase value gives always the same set of 5 numbers (1,2,3,4,0) as Modulo gives the remainder when we divide i by 5, it can be calculated outside of loop
+    since phase value gives always the same set of 5 numbers (1,2,3,4,0) as Modulo gives the remainder when we divide i by 5, it can be calculated outside of loop
 
 line 500>
 
-I used css transform property as a hardware acceleration transform: translateX()
+    I used css transform property as a hardware acceleration transform: translateX()
 
 line 518>
 
-added the updatePositions function as a parameter to the window.requestAnimationFrame method in the scroll event listener
+    added the updatePositions function as a parameter to the window.requestAnimationFrame method in the scroll event listener
 
 line 530> 
 
-Only three rows of pizzas that show up on the screen at any given scroll with 8 columns, i can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza
+    Only a handful pizzas show up on screen at a time, to optimize i value based on screen resolution, window height and width were introduced. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza.
 
 Changes made to changePizzaSizes(size) function
 
-Optimize for loop calculation time by moving out newwidth and dx values.
+    Optimize for loop calculation time by moving out newwidth and dx values.
 
-querySelectorAll replaced by getElementsByClassName
+    querySelectorAll replaced by getElementsByClassName
 
 
 
 Other changes made to pizza.html
 
-1. use cdn link to minified bootstrap css
+    Use cdn link to minified bootstrap css
 
-2. inline css
+    Inline css
 
 The development source code is under branch MySolution and folder/views/js/main.js on github:
 https://github.com/pianove/frontend-nanodegree-mobile-portfolio/tree/mysolution
