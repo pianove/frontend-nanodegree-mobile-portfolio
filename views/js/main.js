@@ -509,43 +509,25 @@ window.addEventListener('scroll', function () {
 });
 
 // Generates the sliding pizzas when the page loads.
-//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 8 columns. To optimize i value based on screen resolution, window height and width were introduced. can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza//
+//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 8 columns. To optimize i value based on screen resolution, window height and width were introduced. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza//
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
     var cols = 8;
     var s = 256;
-    var elem = {};
-    var rows = 
-    for (i = 0; i < 24; i += 1) {
-        elem = document.createElement('img');
+    var elem = {},
+        i,
+        j;
+    var picWidth = 73.333;
+    var picHeight = 100;
+    var cols = screen.width / (s + picWidth)  + 1;
+    var rows = screen.height / (s + picHeight) + 1;    
+  for (var i = 0; i < cols; i++) {
+    for (var j = 0; j < rows; j++) {
+        var elem = document.createElement('img');
         elem.className = 'mover';
         elem.src = "images/pizza.png";
-        elem.style.height = "100px";
-        elem.style.width = "73.333px";
-        elem.style.position = "fixed"; // inline all css//
-        elem.style.zIndex = "-1"; // inline all css//
-        elem.style.transform = "translate3d(0, 0, 0)";
-        elem.phase = i % 5; // phase number calculated here
-        elem.basicLeft = (i % cols) * s;
-        elem.style.top = (Math.floor(i / cols) * s) + 'px';
-        elem.style.left = elem.basicLeft + 'px';//initiate y coordinate
-        document.getElementById("movingPizzas1").appendChild(elem);
-    }
-});
-// Generates the sliding pizzas when the page loads.
-//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 8 columns. To optimize i value can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza//
-document.addEventListener('DOMContentLoaded', function () {
-    "use strict";
-    var cols = 8;
-    var s = 256;
-    var elem = {};
-    var rows = 
-    for (i = 0; i < 24; i += 1) {
-        elem = document.createElement('img');
-        elem.className = 'mover';
-        elem.src = "images/pizza.png";
-        elem.style.height = "100px";
-        elem.style.width = "73.333px";
+        elem.style.height = picHeight + "px";
+        elem.style.width = picWidth + "px"
         elem.style.position = "fixed"; // inline all css//
         elem.style.zIndex = "-1"; // inline all css//
         elem.style.transform = "translate3d(0, 0, 0)";
