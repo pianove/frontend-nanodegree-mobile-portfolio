@@ -35,27 +35,27 @@ To launch pizza.html you copy the below Url to your web browser http://pianove.g
 
 When scrolling, the original total time to run updatePositions function call was way too long 623.245ms and with many warnings about forced synchronous layout.
 
-Changes made to updatePositions function:
+Changes made to updatePositions function in order to avoid style recalculation and lean the for loop to optimize calculation time:
 
-line 483>
+Line 483>
 
-    use getElementsByClassName('.mover) instead of querySelectorAll
+    Use getElementsByClassName('.mover) instead of querySelectorAll
 
-line 485>
+Line 485>
 
-    The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop is cached and phase calculation removed from the loop
+    The Layout gets retriggered every time we scroll, scrollTop is cached and phase calculation removed from the loop
 
-line 486>
+Line 486>
 
-    since phase value gives always the same set of 5 numbers (1,2,3,4,0) as Modulo gives the remainder when we divide i by 5, it can be calculated outside of loop
+    Since phase value gives always the same set of 5 numbers (1,2,3,4,0), can be calculated outside of loop
 
-line 500>
+Line 500>
 
     I used css transform property as a hardware acceleration transform: translateX()
 
-line 518>
+Line 518>
 
-    added the updatePositions function as a parameter to the window.requestAnimationFrame method in the scroll event listener
+    Added the updatePositions function as a parameter to the window.requestAnimationFrame method in the scroll event listener
 
 line 530> 
 
