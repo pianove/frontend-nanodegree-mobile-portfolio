@@ -1,10 +1,6 @@
 /*
-Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
+Welcome to the 60fps project! My goal is to make Cam's Pizzeria website run
 jank-free at 60 frames per second.
-
-There are two major issues in this code that lead to sub-60fps performance. Can
-you spot and fix both?
-
 
 Built into the code, you'll find a few instances of the User Timing API
 (window.performance), which will be console.log()ing frame rate data into the
@@ -429,10 +425,7 @@ var resizePizzas = function (size) {
         var newwidth = (document.getElementsByClassName("randomPizzaContainer")[0].offsetWidth + dx) + 'px';
 
         for (i = 0; i < document.getElementsByClassName("randomPizzaContainer").length; i += 1) {
-//            dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-//            newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-//            document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
-            document.getElementsByClassName("randomPizzaContainer")[i].style.width = newwidth;
+ document.getElementsByClassName("randomPizzaContainer")[i].style.width = newwidth;
         }
     }
 
@@ -489,20 +482,12 @@ function updatePositions() {
     /* CHANGES MADE: The Layout gets retriggered every time we scroll. To avoid style recalculation and lean the for loop, scrollTop is cached and phase calculation removed from the loop */
     var top = document.body.scrollTop / 1250;
     var phases = [];
-//    var j;
     phases[0] = Math.sin(top + 0) * 100;
     phases[1] = Math.sin(top + 1) * 100;
     phases[2] = Math.sin(top + 2) * 100;
     phases[3] = Math.sin(top + 3) * 100;
     phases[4] = Math.sin(top + 4) * 100;
-//    for (j = 0; j < 5; j += 1) {
-//        phases.push(Math.sin(top + j) * 100);
-//    }
     for (i = 0; i < items.length; i += 1) {
-//      var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-//      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-//      items[i].style.left = items[i].basicLeft + phases[items[i].phase] + 'px';
-    // CHANGES MADE:  I used css transform property as a hardware acceleration transform: translateX();//
         items[i].style.transform = "translateX(" + phases[items[i].phase] + "px)";
     }
     // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -518,20 +503,19 @@ function updatePositions() {
 // CHANGES MADE: I added the updatePositions function as a parameter to the window.requestAnimationFrame method in the scroll event listener//
 
 // runs updatePositions on scroll
-//window.addEventListener('scroll', updatePositions);
-
 window.addEventListener('scroll', function () {
     "use strict";
     window.requestAnimationFrame(updatePositions);
 });
 
 // Generates the sliding pizzas when the page loads.
-//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 8 columns, i can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza//
+//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 8 columns. To optimize i value based on screen resolution, window height and width were introduced. can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza//
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
     var cols = 8;
     var s = 256;
     var elem = {};
+    var rows = 
     for (i = 0; i < 24; i += 1) {
         elem = document.createElement('img');
         elem.className = 'mover';
@@ -547,5 +531,28 @@ document.addEventListener('DOMContentLoaded', function () {
         elem.style.left = elem.basicLeft + 'px';//initiate y coordinate
         document.getElementById("movingPizzas1").appendChild(elem);
     }
-//  updatePositions(); no need to call
+});
+// Generates the sliding pizzas when the page loads.
+//CHANGES MADE: Only three rows of pizzas that show up on the screen at any given scroll with 8 columns. To optimize i value can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza//
+document.addEventListener('DOMContentLoaded', function () {
+    "use strict";
+    var cols = 8;
+    var s = 256;
+    var elem = {};
+    var rows = 
+    for (i = 0; i < 24; i += 1) {
+        elem = document.createElement('img');
+        elem.className = 'mover';
+        elem.src = "images/pizza.png";
+        elem.style.height = "100px";
+        elem.style.width = "73.333px";
+        elem.style.position = "fixed"; // inline all css//
+        elem.style.zIndex = "-1"; // inline all css//
+        elem.style.transform = "translate3d(0, 0, 0)";
+        elem.phase = i % 5; // phase number calculated here
+        elem.basicLeft = (i % cols) * s;
+        elem.style.top = (Math.floor(i / cols) * s) + 'px';
+        elem.style.left = elem.basicLeft + 'px';//initiate y coordinate
+        document.getElementById("movingPizzas1").appendChild(elem);
+    }
 });

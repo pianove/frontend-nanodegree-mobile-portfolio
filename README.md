@@ -61,18 +61,29 @@ line 530>
 
 Only three rows of pizzas that show up on the screen at any given scroll with 8 columns, i can be reduced to 24. Removed updatePositions() function call, and calculate phase and y coordinate of each pizza
 
+Changes made to changePizzaSizes(size) function
+
+Optimize for loop calculation time by moving out newwidth and dx values.
+
+querySelectorAll replaced by getElementsByClassName
+
+
+
 Other changes made to pizza.html
 
 1. use cdn link to minified bootstrap css
 
 2. inline css
 
-The development source code is under branch MySolution on github:
+The development source code is under branch MySolution and folder/views/js/main.js on github:
 https://github.com/pianove/frontend-nanodegree-mobile-portfolio/tree/mysolution
+
+The production code is linted/optimized and minified with gulp under views/public/js and public/images.
+
 
 REMAINING ISSUES
 
-The scripting time went nicely down after all these changes, however the painting time is still very high even after translateX() or playing with other css feature in devtools while continuous painting on.
+The scripting time went nicely down after all these changes, however the painting time is still very high even after translateX() or playing with other css feature in devtools while continuous painting on or optimizing through gulp.
 
 ### Resources
  * [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")
